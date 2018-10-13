@@ -63,12 +63,33 @@
                     <table class="insert-tab" width="100%">
                         <tbody>
                             <tr>
+                                <th width="120"><i class="require-red">*</i>分类：</th>
+                                <td>
+                                    <select name="class_id" id="">
+                                        <option value="">全部</option>
+                                        <?php foreach($class as $k=>$v): ?>
+                                        <?php if($v['id']==$data['class_id']): ?>
+                                        <option selected="selected" value="<?=$v['id']?>"><?=$v['name']?></option>
+                                        <?php else: ?>
+                                        <option value="<?=$v['id']?>"><?=$v['name']?></option>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th><i class="require-red">*</i>标题：</th>
                                 <td>
                                     <input class="common-text required" id="title" name="title" size="50" value="<?=$data['title']?>" type="text">
                                 </td>
                             </tr>
-                            
+                            <tr>
+                                <th><i class="require-red">*</i>缩略图：</th>
+                                <td>
+                                    <div class='img_preview'><img src="<?=$data['image']?>" width='120' height='120'></div>
+                                    <input class="preview" name="image" id="" type="file"></td>
+                            </tr>
                             <tr>
                                 <th>内容：</th>
                                 <td><textarea name="content" class="common-textarea" id="content" cols="30" style="width: 98%;" rows="10"><?=$data['content']?></textarea></td>
@@ -90,3 +111,8 @@
 </div>
 </body>
 </html>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/img_preview.js"></script>
+<script>
+
+</script>

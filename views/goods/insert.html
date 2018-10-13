@@ -63,12 +63,26 @@
                     <table class="insert-tab" width="100%">
                         <tbody>
                             <tr>
+                                <th width="120"><i class="require-red">*</i>分类：</th>
+                                <td>
+                                    <select name="class_id" id="catid" class="required">
+                                        <option value="">请选择</option>
+                                        <?php foreach($data as $k=>$v): ?>
+                                        <option value="<?=$v['id']?>"><?=$v['name']?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th><i class="require-red">*</i>标题：</th>
                                 <td>
                                     <input class="common-text required" id="title" name="title" size="50" value="" type="text">
                                 </td>
                             </tr>
-                            
+                            <tr>
+                                <th><i class="require-red">*</i>缩略图：</th>
+                                <td><input class="preview" name="image" id="" type="file"><!--<input type="submit" onclick="submitForm('/jscss/admin/design/upload')" value="上传图片"/>--></td>
+                            </tr>
                             <tr>
                                 <th>内容：</th>
                                 <td><textarea name="content" class="common-textarea" id="content" cols="30" style="width: 98%;" rows="10"></textarea></td>
@@ -90,3 +104,8 @@
 </div>
 </body>
 </html>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/img_preview.js"></script>
+<script>
+
+</script>

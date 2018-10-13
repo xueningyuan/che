@@ -22,20 +22,20 @@
 						<form action="/users/doregister" method="post">
 							
 							<div class="form_text_ipt">
-								<input name="email" type="text" placeholder="邮箱">
+								<input name="email" type="email" placeholder="邮箱" required>
 							</div>
 							<div class="ececk_warning"><span>邮箱不能为空</span></div>
 							<div class="form_text_ipt">
-								<input name="pass" type="password" placeholder="密码">
+								<input name="pass" type="password" id="pass1" placeholder="密码" required>
 							</div>
 							<div class="ececk_warning"><span>密码不能为空</span></div>
 							<div class="form_text_ipt">
-								<input name="repassword" type="password" placeholder="重复密码">
+								<input name="repassword" type="password" id="pass2" placeholder="重复密码"  required>
 							</div>
-							<div class="ececk_warning"><span>密码不能为空</span></div>
+							<div class="ececk_warning"><span>密码输入不一致</span></div>
 
 							<div class="form_text_ipt">
-								<input name="phone" type="text" placeholder="手机号">								
+								<input name="phone" type="text" placeholder="手机号" pattern="^1[3-9]\d{9}$" required> 								
 							</div>
 		
 							<div class="ececk_warning">
@@ -46,7 +46,7 @@
 								</div>
 
 							<div class="form_text_ipt">
-								<input name="code" type="text" placeholder="验证码">
+								<input name="code" type="text" placeholder="验证码" required>
 							</div>
 							<div class="ececk_warning"><span>验证码不能为空</span></div>
 							
@@ -101,4 +101,11 @@ var si;
 			}
 		});
 	});
+
+$("#pass2").change(function(){
+	if($(this).val() != $("#pass1").val()){
+		$(this).parent().next().show();
+	}
+
+});
 </script>

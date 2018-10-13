@@ -64,14 +64,20 @@
                         <tr>
                             <th width="120">选择分类:</th>
                             <td>
-                                <select name="search-sort" id="">
+                                <select name="class" id="">
                                     <option value="">全部</option>
-                                    <option value="19">精品界面</option><option value="20">推荐界面</option>
+                                    <?php foreach($class as $k=>$v): ?>
+                                    <?php if($v['id']==$data['select']['class']): ?>
+                                    <option selected="selected" value="<?=$v['id']?>"><?=$v['name']?></option>
+                                    <?php else: ?>
+                                    <option value="<?=$v['id']?>"><?=$v['name']?></option>
+                                    <?php endif; ?>
+                                    <?php endforeach; ?>
                                 </select>
                             </td>
                             <th width="70">关键字:</th>
-                            <td><input class="common-text" placeholder="关键字" name="title" value="<?=@$select['title']?>" id="" type="text"></td>
-                            <td><input class="common-text" placeholder="用户" name="email" value="<?=@$select['email']?>" id="" type="text"></td>
+                            <td><input class="common-text" placeholder="关键字" name="title" value="<?=@$data['select']['title']?>" id="" type="text"></td>
+                            <td><input class="common-text" placeholder="用户" name="email" value="<?=@$data['select']['email']?>" id="" type="text"></td>
                             <td><input class="btn btn-primary btn2" name="sub" value="查询" type="submit"></td>
                         </tr>
                     </table>
@@ -101,7 +107,7 @@
                             <th>评论</th>
                             <th>操作</th>
                         </tr>
-                        <?php foreach($data as $v): ?> 
+                        <?php foreach($data['data'] as $v): ?> 
                         <tr>
                             <td class="tc"><input name="id[]" value="<?=$v['id']?>" type="checkbox"></td>
                             <td>
@@ -127,7 +133,7 @@
                         </tr>
                         <?php endforeach; ?> 
                     </table>
-                    <div class="list-page"> <?=$page?></div>
+                    <div class="list-page"> <?=$data['page']?></div>
                 </div>
             </form>
         </div>
