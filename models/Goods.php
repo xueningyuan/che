@@ -6,15 +6,21 @@ class Goods extends Model
     // 设置这个模型对应的表
     protected $table = 'goods';
     // 设置允许接收的字段
-    protected $fillable = ['title','type','diji','user_id','comment','content','class_id','image'];
+    protected $fillable = ['title','type','diji','user_id','comment','content','cla1','cla2','cla3','image'];
 
     public function search($POST){
 
         $where = 1;
 
         $value = [];
-        if(isset($POST['class']) && $POST['class'] ){
-            $where .= " and (a.class_id = {$POST['class']}) ";
+        if(isset($POST['cla1']) && $POST['cla1'] ){
+            $where .= " and (a.cla1 = {$POST['cla1']}) ";
+        }
+        if(isset($POST['cla2']) && $POST['cla2'] ){
+            $where .= " and (a.cla2 = {$POST['cla2']}) ";
+        }
+        if(isset($POST['cla3']) && $POST['cla3'] ){
+            $where .= " and (a.cla3 = {$POST['cla3']}) ";
         }
         if(isset($POST['title']) && $POST['title'] ){
             $value ='%'.$POST['title'].'%';

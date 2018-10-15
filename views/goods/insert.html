@@ -65,11 +65,17 @@
                             <tr>
                                 <th width="120"><i class="require-red">*</i>分类：</th>
                                 <td>
-                                    <select name="class_id" id="catid" class="required">
+                                    <select name="cla1" id="catid1" class="required">
                                         <option value="">请选择</option>
                                         <?php foreach($data as $k=>$v): ?>
                                         <option value="<?=$v['id']?>"><?=$v['name']?></option>
                                         <?php endforeach; ?>
+                                    </select>
+                                    <select name="cla2" id="catid2" class="required">
+                                        <option value="">请选择</option>
+                                    </select>
+                                    <select name="cla3" id="catid3" class="required">
+                                        <option value="">请选择</option>
                                     </select>
                                 </td>
                             </tr>
@@ -107,5 +113,41 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/img_preview.js"></script>
 <script>
+// 三级联动
+$("select[name=cla1]").change(function(){
+    var id = $(this).val()
+    if(id!=""){
+        $.ajax({
+            type:"GET",
+            url:"/goods/ajax_get_cat?id="+id,
+            dataType:"json",
+            success:function(data){
+                var str = "";
+                for(var i=0;i<data.data.length;i++){
+                    str +='<option value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                }
+                $("select[name=cla2]").html(str)
+                $("select[name=cla2]").trigger('change');
 
+            }
+        });
+    }
+});
+$("select[name=cla2]").change(function(){
+    var id = $(this).val()
+    if(id!=""){
+        $.ajax({
+            type:"GET",
+            url:"/goods/ajax_get_cat?id="+id,
+            dataType:"json",
+            success:function(data){
+                var str = "";
+                for(var i=0;i<data.data.length;i++){
+                    str +='<option value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                }
+                $("select[name=cla3]").html(str)
+            }
+        });
+    }
+});
 </script>

@@ -119,7 +119,7 @@ use PDO;
             'where' => 1,
             'order_by' => 'id',
             'order_way' => 'desc',
-            'per_page'=>9,
+            'per_page'=>20,
             'join'=>'',
             'groupby'=>'',
         ];

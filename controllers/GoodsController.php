@@ -6,23 +6,34 @@ use models\Classs;
 
 class GoodsController
 {
+    public function ajax_get_cat(){
+        $id = $_GET['id'];
+        $Classs = new Classs;
+        $cla = $Classs->findAll([
+            'where'=> " class_id={$id}"
+        ]);
+        echo json_encode($cla);
+    }
     public function design()
     {   
         $model = new Goods;
         $Classs = new Classs;
 
-        $cla = $Classs->findAll();
+        $cla = $Classs->findAll([
+            'where'=> " class_id=0"
+        ]);
 
         $where = $model->search($_POST);
         $data = $model->findAll([
-            'fields'=>'a.*,b.email,c.name',
+            'fields'=>'a.*,b.email',
             'where' => $where,
-            'join'=>'a LEFT JOIN users b ON a.user_id=b.id LEFT JOIN classs c ON a.class_id=c.id ',
-            'per_page'=>5
+            'join'=>'a LEFT JOIN users b ON a.user_id=b.id ',
         ]);
         @$data['select']['title'] = $_POST['title'];
         @$data['select']['email'] = $_POST['email'];
-        @$data['select']['class'] = $_POST['class'];
+        @$data['select']['cla1'] = $_POST['cla1'];
+        @$data['select']['cla2'] = $_POST['cla2'];
+        @$data['select']['cla3'] = $_POST['cla3'];
         // 显示页面
         view('goods/design',[
             'data'=>$data,
@@ -33,7 +44,9 @@ class GoodsController
     public function create()
     {
         $Classs = new Classs;
-        $cla = $Classs->findAll();
+        $cla = $Classs->findAll([
+            'where'=>' class_id=0'
+        ]);
 
         view('goods/insert',$cla);
     }
@@ -52,7 +65,9 @@ class GoodsController
     public function edit()
     {   
         $Classs = new Classs;
-        $cla = $Classs->findAll();
+        $cla = $Classs->findAll([
+            'where'=>' class_id=0'
+        ]);
 
         $model = new Goods;
         $data=$model->findOne($_GET['id']);

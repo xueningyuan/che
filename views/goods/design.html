@@ -64,15 +64,21 @@
                         <tr>
                             <th width="120">选择分类:</th>
                             <td>
-                                <select name="class" id="">
+                                <select name="cla1" id="">
                                     <option value="">全部</option>
                                     <?php foreach($class as $k=>$v): ?>
-                                    <?php if($v['id']==$data['select']['class']): ?>
+                                    <?php if($v['id']==$data['select']['cla1']): ?>
                                     <option selected="selected" value="<?=$v['id']?>"><?=$v['name']?></option>
                                     <?php else: ?>
                                     <option value="<?=$v['id']?>"><?=$v['name']?></option>
                                     <?php endif; ?>
                                     <?php endforeach; ?>
+                                </select>
+                                <select name="cla2" id="">
+                                    <option value="">请选择</option>
+                                </select>
+                                <select name="cla3" id="">
+                                    <option value="">请选择</option>
                                 </select>
                             </td>
                             <th width="70">关键字:</th>
@@ -142,3 +148,58 @@
 </div>
 </body>
 </html>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/img_preview.js"></script>
+<script>
+    var cla2 = "<?=$data['select']['cla2']?>";
+    var cla3 = "<?=$data['select']['cla3']?>";
+    // 三级联动
+    $("select[name=cla1]").change(function(){
+        var id = $(this).val()
+        if(id!=""){
+            $.ajax({
+                type:"GET",
+                url:"/goods/ajax_get_cat?id="+id,
+                dataType:"json",
+                success:function(data){
+                    var str = '<option value="">请选择</option>';
+                    for(var i=0;i<data.data.length;i++){
+                        if(data.data[i].id==cla2)
+                        {
+                            str +='<option selected="selected" value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                        }                           
+                        else
+                        {   
+                            str +='<option value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                        }
+                            
+                    }
+                    $("select[name=cla2]").html(str)
+                    $("select[name=cla2]").trigger('change');
+    
+                }
+            });
+        }
+    });
+    $("select[name=cla2]").change(function(){
+        var id = $(this).val()
+        if(id!=""){
+            $.ajax({
+                type:"GET",
+                url:"/goods/ajax_get_cat?id="+id,
+                dataType:"json",
+                success:function(data){
+                    var str = '<option value="">请选择</option>';
+                    for(var i=0;i<data.data.length;i++){
+                        if(data.data[i].id==cla3)
+                            str +='<option selected="selected" value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                        else
+                            str +='<option value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                    }
+                    $("select[name=cla3]").html(str)
+                }
+            });
+        }
+    });
+    $("select[name=cla1]").trigger('change');
+</script>
