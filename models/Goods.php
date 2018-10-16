@@ -42,21 +42,7 @@ class Goods extends Model
                     // 如果有要删除的图片ID，那就删除
             if(isset($_POST['del_image']) && $_POST['del_image'] != '')
             {
-                // 先根据ID把图片路径取出来
-                $stmt = $this->_db->prepare("SELECT * FROM good_img WHERE id IN({$_POST['del_image']})");
-                $stmt->execute();
-                $path = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-                // 循环每个图片的路径并删除
-                foreach($path as $v)
-                {
-                    @unlink(ROOT.'public/'.$v['image']);
-                    @unlink(ROOT.'public/'.$v['img1']);
-                    @unlink(ROOT.'public/'.$v['img2']);
-                    @unlink(ROOT.'public/'.$v['img3']);
-                }
-                // 从数据库中把图片的记录删除
-                $stmt = $this->_db->prepare("DELETE FROM good_img WHERE id IN({$_POST['del_image']})");
-                $stmt->execute();
+                $this->_delete_logo($_POST['del_image']);
             }
             // echo '<pre>';
             // var_dump($_FILES);die;
@@ -67,7 +53,7 @@ class Goods extends Model
             $goodsId =isset($_GET['id']) ? $_GET['id'] : $goodsId['id']+1;
             if($_FILES['image']['error'][0] == 0)
             {  
-                $this->_delete_logo($goodsId);
+                
                 // 实现上传图片的代码
                 $uploader = \libs\Uploader::make();
                 $resize = \libs\Resize::make();
@@ -113,16 +99,21 @@ class Goods extends Model
 
         protected function _delete_logo($id)
         {
-            $stmt = $this->_db->prepare("select * from good_img where good_id=?");
-            $stmt->execute([$id]);
-            $data = $stmt->fetchAll( \PDO::FETCH_ASSOC );
-            foreach($data as $k=>$v){
-                @unlink(ROOT . 'public'. $data[$k]['image']);
-                @unlink(ROOT . 'public'. $data[$k]['img1']);
-                @unlink(ROOT . 'public'. $data[$k]['img2']);
-                @unlink(ROOT . 'public'. $data[$k]['img3']);
-            }
-            $this->_db->exec("DELETE FROM good_img WHERE good_id={$id}");
+                // 先根据ID把图片路径取出来
+                $stmt = $this->_db->prepare("SELECT * FROM good_img WHERE id IN({$id})");
+                $stmt->execute();
+                $path = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                // 循环每个图片的路径并删除
+                foreach($path as $v)
+                {
+                    @unlink(ROOT.'public/'.$v['image']);
+                    @unlink(ROOT.'public/'.$v['img1']);
+                    @unlink(ROOT.'public/'.$v['img2']);
+                    @unlink(ROOT.'public/'.$v['img3']);
+                }
+                // 从数据库中把图片的记录删除
+                $stmt = $this->_db->prepare("DELETE FROM good_img WHERE id IN({$id})");
+                $stmt->execute();
         }
 
         public function getimg($id){
