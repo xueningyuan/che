@@ -95,6 +95,6 @@ class GoodsController extends BaseController
     {
         $model = new Goods;
         $model->delete($_GET['id']);
-        redirect('/goods/design');
+        message("删除成功", 0, "/goods/design");
     }
 }

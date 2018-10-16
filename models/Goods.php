@@ -98,8 +98,8 @@ class Goods extends Model
         }
 
         protected function _delete_logo($id)
-        {
-                // 先根据ID把图片路径取出来
+        {   
+             // 先根据ID把图片路径取出来
                 $stmt = $this->_db->prepare("SELECT * FROM good_img WHERE id IN({$id})");
                 $stmt->execute();
                 $path = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -114,12 +114,33 @@ class Goods extends Model
                 // 从数据库中把图片的记录删除
                 $stmt = $this->_db->prepare("DELETE FROM good_img WHERE id IN({$id})");
                 $stmt->execute();
+            
         }
 
         public function getimg($id){
             $stmt = $this->_db->prepare("select * from good_img where good_id=?");
             $stmt->execute([$id]);
             return $stmt->fetchAll( \PDO::FETCH_ASSOC );
+        }
+
+        public function _before_delete(){
+            $id = $_GET['id'];
+            $stmt = $this->_db->prepare("SELECT * FROM good_img WHERE good_id ={$id}");
+                $stmt->execute();
+                $path = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                // 循环每个图片的路径并删除
+                foreach($path as $v)
+                {
+                    @unlink(ROOT.'public/'.$v['image']);
+                    @unlink(ROOT.'public/'.$v['img1']);
+                    @unlink(ROOT.'public/'.$v['img2']);
+                    @unlink(ROOT.'public/'.$v['img3']);
+                }
+            // 从数据库中把图片的记录删除
+            $stmt = $this->_db->prepare("DELETE FROM good_img WHERE good_id ={$id}");
+            $stmt->execute();
+            $stmt = $this->_db->prepare("DELETE FROM goods WHERE id=?");
+            $stmt->execute([$id]);
         }
     
 }
