@@ -21,20 +21,20 @@
 						<form action="/users/login" method="post">
 							
 							<div class="form_text_ipt">
-								<input name="email" type="text" placeholder="邮箱">
+								<input name="email" id="email" type="text" placeholder="邮箱">
 							</div>
 							<div class="ececk_warning"><span>手机号/邮箱不能为空</span></div>
 							<div class="form_text_ipt">
 								<input name="pass" type="password" placeholder="密码">
 							</div>
 							<div class="ececk_warning"><span>密码不能为空</span></div>
-							<div class="form_text_ipt">
+							<div class="form_text_ipt" id="code1" style="display:none">
 								<input name="code1" type="text" value="<?=$a1?>~<?=$a2?>=">
 							</div>
 							<div class="ececk_warning"><span>验证码不能为空</span></div>
-							<div class="form_text_ipt">
-									<input name="code2" type="text" placeholder="验证码(上面两数相加)">
-								</div>
+							<div class="form_text_ipt" id="code2" style="display:none">
+								
+							</div>
 							<div class="form_check_ipt">
 								<div class="left check_left">
 									<label><input name="" type="checkbox"> 下次自动登录</label>
@@ -68,3 +68,27 @@
 		<script type="text/javascript" src="/js/common.js" ></script>
 	</body>
 </html>
+<script>
+
+		$("#email").change(function(){
+			var email = $(this).val();
+			$.ajax({
+				type:"GET",
+				url:"/users/pv",
+				data:{email:email},
+				success:function(data){
+					if(data!=1){
+						$("#code1").show();
+						$("#code2").show();
+						str = '<input name="code2" type="text" placeholder="验证码(上面两数相加)">';
+						$("#code2").html(str)
+					}else{
+						$("#code1").hide();
+						$("#code2").hide();
+						str = ""
+						$("#code2").html(str)
+					}
+				}
+			});
+		});
+</script>

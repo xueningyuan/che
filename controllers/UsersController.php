@@ -5,10 +5,28 @@ use models\User;
 use Flc\Dysms\Client;
 use Flc\Dysms\Request\SendSms;
 use Illuminate\Support\Facades\Cache;
+use models\Pv;
+
 
 class UsersController
 {   
-
+    public function pv(){
+        $email = $_GET['email'];
+        $user = new User;
+        $data = $user->findAll([
+            'fields' => 'b.ip',
+            'where' => "a.email = '{$email}' and b.url='/'",
+            'join'=>' a left join pv b on a.id=b.user_id ',
+            'per_page'=>1,
+            'order_by' => 'b.created_at'
+        ]);
+        if($data && @$data['data'][0]['ip'] == $_SERVER['REMOTE_ADDR']){
+            echo true;
+        }else{
+            echo false;
+        }
+        
+    }
     public function sns(){
         $code = rand(100000,999999);
         $redis = \libs\Redis::getInstance();
@@ -20,17 +38,21 @@ class UsersController
     }
 
     public function index(){
+
         $a = ['a1'=>rand(1,99),'a2'=>rand(1,99)];
         $_SESSION['code2'] = $a['a1']+$a['a2'];
         echo  $_SESSION['code2'];
+
         view('login/index',$a);
     }
     public function login(){        
-        if(!isset($_POST['code2']) || $_POST['code2'] != $_SESSION['code2'])
-        {
-            message('验证码错误！', 0, '/users/index');
-            return;
-        }
+        if(isset($_POST['code2'])){
+            if($_POST['code2'] != $_SESSION['code2'])
+            {
+                message('验证码错误！', 0, '/users/index');
+                return;
+            }
+    }
 
         $email = $_POST['email'];
         $pass = $_POST['pass'];

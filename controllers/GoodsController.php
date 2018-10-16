@@ -4,7 +4,7 @@ namespace controllers;
 use models\Goods;
 use models\Classs;
 
-class GoodsController
+class GoodsController extends BaseController
 {
     public function ajax_get_cat(){
         $id = $_GET['id'];
@@ -69,9 +69,12 @@ class GoodsController
             'where'=>' class_id=0'
         ]);
 
+
+
         $model = new Goods;
         $data=$model->findOne($_GET['id']);
-        
+        $data['image']=$model->getimg($_GET['id']);
+
         view('goods/edit', [
             'data' => $data,
             'class'=>$cla['data']    

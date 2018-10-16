@@ -87,7 +87,9 @@
                             </tr>
                             <tr>
                                 <th><i class="require-red">*</i>缩略图：</th>
-                                <td><input class="preview" name="image" id="" type="file"><!--<input type="submit" onclick="submitForm('/jscss/admin/design/upload')" value="上传图片"/>--></td>
+                                <td>
+                                    <input type="button" id="btn-img" value="添加图片"><br>
+                                    <input class="preview" name="image[]" id="" type="file"><br></td>
                             </tr>
                             <tr>
                                 <th>内容：</th>
@@ -112,7 +114,34 @@
 </html>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/img_preview.js"></script>
+
 <script>
+var attrStr = `<div><input class="preview" name="image[]" id="" type="file">
+<input onclick="del_attr(this)" type="button" value="删除"><br></div>`;
+$("#btn-img").click(function(){
+    $(this).parent().append(attrStr)
+        // 绑定预览事件
+        $(".preview").change(function(){
+        // 获取选择的图片
+        var file = this.files[0];
+        // 转成字符串
+        var str = getObjectUrl(file);
+        // 先删除上一个
+        $(this).prev('.img_preview').remove();
+        // 在框的前面放一个图片
+        $(this).before("<div class='img_preview'><img src='"+str+"' width='120' height='120'></div>");
+    });
+});
+
+function del_attr(o)
+{
+    if(confirm("确定要删除吗？"))
+    {
+        var table = $(o).parent()
+        table.remove()
+    }
+    
+}
 // 三级联动
 $("select[name=cla1]").change(function(){
     var id = $(this).val()
