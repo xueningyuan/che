@@ -1,18 +1,18 @@
 <?php
 namespace controllers;
 
-use models\User;
+use models\Admin;
 use Flc\Dysms\Client;
 use Flc\Dysms\Request\SendSms;
 use Illuminate\Support\Facades\Cache;
 use models\Pv;
 
 
-class UsersController
+class AdminController
 {   
     public function pv(){
         $email = $_GET['email'];
-        $user = new User;
+        $user = new Admin;
         $data = $user->findAll([
             'fields' => 'b.ip',
             'where' => "a.email = '{$email}' and b.url='/'",
@@ -49,7 +49,7 @@ class UsersController
         if(isset($_POST['code2'])){
             if($_POST['code2'] != $_SESSION['code2'])
             {
-                message('验证码错误！', 0, '/users/index');
+                message('验证码错误！', 0, '/admin/index');
                 return;
             }
     }
@@ -58,7 +58,7 @@ class UsersController
         $pass = $_POST['pass'];
 
         // var_dump($_POST);die;
-        $model = new User;
+        $model = new Admin;
         try
         {   
             $model->login($email,$pass);
@@ -68,15 +68,15 @@ class UsersController
         catch(\Exception $e)
         {   
             // 如果这个方法中抛出了异常就执行到这里
-            redirect('/users/index');
+            redirect('/admin/index');
         }
     }
 
     public function logout()
     {
-        $model = new User;
+        $model = new Admin;
         $model->logout();
-        redirect('/users/index');
+        redirect('/admin/index');
     }
     public function register(){
         view('login/register');
@@ -85,7 +85,7 @@ class UsersController
         $code = $_POST['code'];
         if($code && $code != $_SESSION['code']){
             $_SESSION['code']=null;
-            message('验证码错误！', 1, '/users/register'); 
+            message('验证码错误！', 1, '/admin/register'); 
            return;
         }else{
             $_SESSION['code']=null;
@@ -119,8 +119,8 @@ class UsersController
             $message = [
                 'title'=>'欢迎加入全栈一班',
                 'content'=>"点击以下链接进行激活：\r\n <br>
-                <a href='http://xue.ngrok.xiaomiqiu.cn/users/active_user?code={$code}'>
-                http://xue.ngrok.xiaomiqiu.cn/users/active_user?code={$code}\r\n<br></a>如果不能点击，请复制地址",
+                <a href='http://xue.ngrok.xiaomiqiu.cn/admin/active_user?code={$code}'>
+                http://xue.ngrok.xiaomiqiu.cn/admin/active_user?code={$code}\r\n<br></a>如果不能点击，请复制地址",
                 'from'=>$from,
             ];
              // 把消息转成字符串(JSON ==> 序列化)
@@ -128,7 +128,7 @@ class UsersController
              $redis = \libs\Redis::getInstance();
             // 收入信息队列
             $redis->lpush('email',$message);
-            message('邮件发送成功！', 1, '/users/index');
+            message('邮件发送成功！', 1, '/admin/index');
         }
        
     }
@@ -141,11 +141,11 @@ class UsersController
         if($data){
             $redis->del($key);
             $data = json_decode($data,true);
-            $user = new User;
+            $user = new Admin;
             $user->fill($data);
             $user->insert();
             // die("激活成功！");
-            header('Location:/users/index');
+            header('Location:/admin/index');
 
         }
         else

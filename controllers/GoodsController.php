@@ -27,7 +27,7 @@ class GoodsController extends BaseController
         $data = $model->findAll([
             'fields'=>'a.*,b.email',
             'where' => $where,
-            'join'=>'a LEFT JOIN users b ON a.user_id=b.id ',
+            'join'=>'a LEFT JOIN admin b ON a.user_id=b.id ',
         ]);
         @$data['select']['title'] = $_POST['title'];
         @$data['select']['email'] = $_POST['email'];

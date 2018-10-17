@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>后台管理</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+</head>
+<body>
+    <?=view('common/top')?>
+    <!--/sidebar-->
+    <div class="main-wrap">
+
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font"></i><a href="index.html">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">管理员管理</span></div>
+        </div>
+
+        <div class="result-wrap">
+            <form name="myform" id="myform" method="post">
+                <div class="result-title">
+                    <div class="result-list">
+                        <a href="/istrators/create"><i class="icon-font"></i>新增作品</a>
+                    </div>
+                </div>
+                <div class="result-content">
+                    <table class="result-tab" width="100%">
+                        <tr>
+                            <th>ID</th>
+                            <th>管理员</th>
+                            <th>管理员类型</th>
+                            <th>联系方式</th>
+                            <th>创建/更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                        <?php foreach($data['data'] as $v): ?> 
+                        <tr>
+                            <td><?=$v['id']?></td>
+                            <td><?=$v['email']?></td>
+                            <td><?=$v['role_name']?></td>
+                            <td><?=$v['phone']?></td>
+                            <td><?=$v['created_at']?></td>
+
+                            <td>
+                                <a class="link-update" href="/istrators/edit?id=<?=$v['id']?>">修改</a>
+                                <a class="link-del" href="/istrators/delete?id=<?=$v['id']?>">删除</a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?> 
+                    </table>
+                    <div class="list-page"> <?=$data['page']?></div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--/main-->
+</div>
+</body>
+</html>
