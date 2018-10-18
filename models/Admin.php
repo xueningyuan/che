@@ -42,9 +42,9 @@ class Admin extends Model
                      // 取出这个管理员有限访问的路径
                     $_SESSION['url_path'] = $this->getUalPath($_SESSION['id']);
 
-                    $stmt = $this->_db->prepare('SELECT a.role_name FROM role a left join admin_role b on a.id=b.role_id WHERE admin_id=? ');
+                    $stmt = $this->_db->prepare('SELECT a.role_name FROM role a left join admin_role b on a.id=b.role_id WHERE b.admin_id=? ');
                     $stmt->execute([
-                        $info['role_id']
+                        $info['id']
                     ]);
                     $a = $stmt->fetch(\PDO::FETCH_ASSOC);
                     $_SESSION['adminType'] = $a['role_name'];

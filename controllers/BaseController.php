@@ -27,7 +27,7 @@ class BaseController
         
         if(!in_array($path, array_merge($whiteList, $_SESSION['url_path'])))
         {
-            message('无权访问！', 0, '/goods/design');
+            message('无权访问！', 0, '/index/index');
 
         }
 

@@ -45,7 +45,7 @@ class IstratorsController extends BaseController
         $Admin = new Admin;
         $_POST['pass']=md5($_POST['pass']);
         $Admin->fill($_POST);
-        $Admin->insert();exit;
+        $Admin->insert();
         redirect('/istrators/design');
     }
 

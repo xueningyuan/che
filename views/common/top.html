@@ -23,17 +23,39 @@
         </div>
         <div class="sidebar-content">
             <ul class="sidebar-list">
+                <!-- <?php echo $_SESSION['adminType'];?> -->
+                <?php if($_SESSION['adminType']=='超级管理员'): ?>
                 <li>
                     <a href="#"><i class="icon-font">&#xe003;</i>常用操作</a>
                     <ul class="sub-menu">
-                        <?php if($_SESSION['adminType']=='超级管理员'): ?>
                         <li><a href="/goods/design"><i class="icon-font">&#xe008;</i>作品管理</a></li>
+                    </ul>
+                </li> 
+                <li>
+                    <a href="#"><i class="icon-font">&#xe003;</i>管理员操作</a>
+                    <ul class="sub-menu">
                         <li><a href="/istrators/design"><i class="icon-font">&#xe008;</i>管理员管理</a></li>
-                        <?php elseif($_SESSION['adminType']=='商品总监'): ?>
+                        <li><a href="/privilege/design"><i class="icon-font">&#xe008;</i>权限管理</a></li>
+                        <li><a href="/role/design"><i class="icon-font">&#xe008;</i>角色管理</a></li>
+                    </ul>
+                </li> 
+                <?php elseif($_SESSION['adminType']=='商品总监'): ?>
+                <li>
+                    <a href="#"><i class="icon-font">&#xe003;</i>常用操作</a>
+                    <ul class="sub-menu">
                         <li><a href="/goods/design"><i class="icon-font">&#xe008;</i>作品管理</a></li>
-                        <?php endif;?>
+                    </ul>
+                </li> 
+                <?php elseif($_SESSION['adminType']=='人事经理'): ?>
+                <li>
+                    <a href="#"><i class="icon-font">&#xe003;</i>管理员操作</a>
+                    <ul class="sub-menu">
+                        <li><a href="/istrators/design"><i class="icon-font">&#xe008;</i>管理员管理</a></li>
+                        <li><a href="/privilege/design"><i class="icon-font">&#xe008;</i>权限管理</a></li>
+                        <li><a href="/role/design"><i class="icon-font">&#xe008;</i>角色管理</a></li>
                     </ul>
                 </li>
+                <?php endif;?>
                 <li>
                     <a href="#"><i class="icon-font">&#xe018;</i>系统管理</a>
                     <ul class="sub-menu">

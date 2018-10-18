@@ -74,7 +74,7 @@
 			var email = $(this).val();
 			$.ajax({
 				type:"GET",
-				url:"/users/pv",
+				url:"/admin/pv",
 				data:{email:email},
 				success:function(data){
 					if(data!=1){

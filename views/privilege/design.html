@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>后台管理</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+</head>
+<body>
+    <?=view('common/top')?>
+    <!--/sidebar-->
+    <div class="main-wrap">
+
+        <div class="crumb-wrap">
+            <div class="crumb-list"><i class="icon-font"></i><a href="index.html">首页</a><span class="crumb-step">&gt;</span><span class="crumb-name">作品管理</span></div>
+        </div>
+        <div class="result-wrap">
+            <form name="myform" id="myform" method="post">
+                <div class="result-title">
+                    <div class="result-list">
+                        <a href="/privilege/create"><i class="icon-font"></i>新增作品</a>
+                    </div>
+                </div>
+                <div class="result-content">
+                    <table class="result-tab" width="100%">
+                        <tr>
+                            <th>ID</th>
+                            <th>模块</th>
+                            <th>权限地址</th>
+                            <th>操作</th>
+                        </tr>
+                        <?php foreach($data as $v): ?> 
+                        <tr>
+                            <td><?=$v['id']?></td>
+                            <td><?=str_repeat('-', $v['level']*8)?>
+                                <?=$v['pri_name']?></td>
+                            
+                            <td><?=$v['url_path']?></td>
+                            <td>
+                                <a class="link-update" href="/privilege/edit?id=<?=$v['id']?>">修改</a>
+                                <a class="link-del" href="/privilege/delete?id=<?=$v['id']?>">删除</a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?> 
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--/main-->
+</div>
+</body>
+</html>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/img_preview.js"></script>
+<script>
+    var cla2 = "<?=$data['select']['cla2']?>";
+    var cla3 = "<?=$data['select']['cla3']?>";
+    // 三级联动
+    $("select[name=cla1]").change(function(){
+        var id = $(this).val()
+        if(id!=""){
+            $.ajax({
+                type:"GET",
+                url:"/privilege/ajax_get_cat?id="+id,
+                dataType:"json",
+                success:function(data){
+                    var str = '<option value="">请选择</option>';
+                    for(var i=0;i<data.data.length;i++){
+                        if(data.data[i].id==cla2)
+                        {
+                            str +='<option selected="selected" value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                        }                           
+                        else
+                        {   
+                            str +='<option value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                        }
+                            
+                    }
+                    $("select[name=cla2]").html(str)
+                    $("select[name=cla2]").trigger('change');
+    
+                }
+            });
+        }
+    });
+    $("select[name=cla2]").change(function(){
+        var id = $(this).val()
+        if(id!=""){
+            $.ajax({
+                type:"GET",
+                url:"/privilege/ajax_get_cat?id="+id,
+                dataType:"json",
+                success:function(data){
+                    var str = '<option value="">请选择</option>';
+                    for(var i=0;i<data.data.length;i++){
+                        if(data.data[i].id==cla3)
+                            str +='<option selected="selected" value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                        else
+                            str +='<option value="'+data.data[i].id+'">'+data.data[i].name+'</option>';
+                    }
+                    $("select[name=cla3]").html(str)
+                }
+            });
+        }
+    });
+    $("select[name=cla1]").trigger('change');
+</script>
